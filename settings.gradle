@@ -1,0 +1,2 @@
+rootProject.name='Droog'
+include ':app'

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Droog</string>
+    <string name="main_menu_icon_desc">Smiling face greeting you on the main menu</string>
+    <string name="main_menu_flashcards_button">Flashcards</string>
+    <string name="main_menu_quiz_button">Quiz</string>
+</resources>
