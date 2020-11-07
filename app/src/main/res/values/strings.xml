@@ -3,4 +3,10 @@
     <string name="main_menu_icon_desc">Smiling face greeting you on the main menu</string>
     <string name="main_menu_flashcards_button">Flashcards</string>
     <string name="main_menu_quiz_button">Quiz</string>
+    <string name="new_flashcard_word_1">Word 1</string>
+    <string name="new_flashcard_word_2">Word 2</string>
+    <string name="new_flashcard_auto_hints_checkbox">Automatic Hints</string>
+    <string name="new_flashcard_custom_hint">Custom Hint</string>
+    <string name="new_flashcard_icon_desc">Icon depicting the translation of the English word friend into Russian</string>
+    <string name="new_flashcard_button">Add flashcard</string>
 </resources>
