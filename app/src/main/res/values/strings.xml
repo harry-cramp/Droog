@@ -9,4 +9,6 @@
     <string name="new_flashcard_custom_hint">Custom Hint</string>
     <string name="new_flashcard_icon_desc">Icon depicting the translation of the English word friend into Russian</string>
     <string name="new_flashcard_button">Add flashcard</string>
+    <string name="new_flashcard_toast">New flashcard created!</string>
+    <string name="empty_text_field_warning">Please fill something in</string>
 </resources>

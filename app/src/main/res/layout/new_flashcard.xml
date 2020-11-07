@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
+        android:textColorHint="@color/colorHint"
         android:ems="10"
         android:hint="@string/new_flashcard_word_1"
         android:inputType="textPersonName" />
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
+        android:textColorHint="@color/colorHint"
         android:ems="10"
         android:hint="@string/new_flashcard_word_2"
         android:inputType="textPersonName" />
@@ -47,12 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
+        android:textColorHint="@color/colorHint"
         android:ems="10"
         android:hint="@string/new_flashcard_custom_hint"
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/newFlashcardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
