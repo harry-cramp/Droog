@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 public class FlashcardStore {
 
+    private static int NEXT_PAIR = 0;
+
     public static ArrayList<WordPair> wordPairs = new ArrayList<WordPair>();
 
     public static String getAnswer(String word) {
@@ -29,6 +31,19 @@ public class FlashcardStore {
         }
 
         return null;
+    }
+
+    public static int getWordPairCount() {
+        return wordPairs.size();
+    }
+
+    public static WordPair getNextPair() {
+        if(wordPairs.get(NEXT_PAIR) != null)
+            return wordPairs.get(NEXT_PAIR++);
+        else {
+            NEXT_PAIR = 0;
+            return null;
+        }
     }
 
 }

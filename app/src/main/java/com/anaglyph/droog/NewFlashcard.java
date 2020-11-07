@@ -12,11 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 public class NewFlashcard extends AppCompatActivity {
-
-    private final String EMPTY_STRING = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +44,7 @@ public class NewFlashcard extends AppCompatActivity {
                 Log.v("NEW FLASHCARD ON CLICK", "Button clicked");
 
                 String firstWord = firstWordBox.getText().toString();
-                if(firstWord.equals(EMPTY_STRING)) {
+                if(firstWord.equals(R.string.empty_string)) {
                     firstWordBox.setHint(R.string.empty_text_field_warning);
                     firstWordBox.setHintTextColor(getResources().getColor(R.color.colorWarning, null));
                 }else {
@@ -57,7 +53,7 @@ public class NewFlashcard extends AppCompatActivity {
                 }
 
                 String secondWord = secondWordBox.getText().toString();
-                if(secondWord.equals(EMPTY_STRING)) {
+                if(secondWord.equals(R.string.empty_string)) {
                     secondWordBox.setHint(R.string.empty_text_field_warning);
                     secondWordBox.setHintTextColor(getResources().getColor(R.color.colorWarning, null));
                     return;
@@ -68,9 +64,9 @@ public class NewFlashcard extends AppCompatActivity {
 
                 // if neither box is empty, add strings to flashcard store and clear text
                 FlashcardStore.putWordPair(firstWord, secondWord, customHintBox.getText().toString());
-                firstWordBox.setText(EMPTY_STRING);
-                secondWordBox.setText(EMPTY_STRING);
-                customHintBox.setText(EMPTY_STRING);
+                firstWordBox.setText(R.string.empty_string);
+                secondWordBox.setText(R.string.empty_string);
+                customHintBox.setText(R.string.empty_string);
                 Toast.makeText(context, R.string.new_flashcard_toast, Toast.LENGTH_SHORT).show();
             }
         });

@@ -22,6 +22,12 @@
             android:label="@string/new_flashcard_activity_name">
 
         </activity>
+
+        <activity android:name=".Flashcards"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/new_flashcard_activity_name">
+
+        </activity>
     </application>
 
 </manifest>

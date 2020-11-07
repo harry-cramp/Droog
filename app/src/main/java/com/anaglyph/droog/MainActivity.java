@@ -31,5 +31,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        final Button flashcardsButton = (Button)findViewById(R.id.menuFlashcardsButton);
+        flashcardsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Flashcards.class);
+                startActivity(intent);
+            }
+        });
     }
 }
