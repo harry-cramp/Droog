@@ -18,6 +18,10 @@ public class WordPair {
         return pairRank;
     }
 
+    public void setPairRank(int pairRank) {
+        this.pairRank = pairRank;
+    }
+
     public String getFirstWord() {
         return firstWord;
     }

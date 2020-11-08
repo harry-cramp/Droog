@@ -16,8 +16,10 @@ public class Flashcards extends AppCompatActivity {
 
     private void reset() {
         wordPair = FlashcardStore.getNextPair();
-        if(wordPair == null)
+        if(wordPair == null) {
             finish();
+            return;
+        }
 
         revealed = false;
 

@@ -12,7 +12,50 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class NewFlashcard extends AppCompatActivity {
+
+    private JSONObject buildJSONObject(WordPair wordPair) {
+        try {
+            JSONObject pairJSON = new JSONObject();
+            pairJSON.put(getResources().getString(R.string.json_flashcard_first_word_tag), wordPair.getFirstWord());
+            pairJSON.put(getResources().getString(R.string.json_flashcard_second_word_tag), wordPair.getSecondWord());
+            pairJSON.put(getResources().getString(R.string.json_flashcard_hint_tag), wordPair.getHint());
+            pairJSON.put(getResources().getString(R.string.json_flashcard_pair_rank_tag), wordPair.getPairRank());
+            return pairJSON;
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private String writeJSONObject(JSONObject jsonObject) {
+        String jsonString = jsonObject.toString();
+
+        try {
+            File file = new File(getApplicationContext().getFilesDir(), (String)jsonObject.get("Word 1"));
+
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(jsonString);
+            bufferedWriter.close();
+            fileWriter.close();
+
+            return jsonString;
+        }catch(JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +105,13 @@ public class NewFlashcard extends AppCompatActivity {
                     secondWordBox.setHintTextColor(getResources().getColor(R.color.colorHint, null));
                 }
 
+                WordPair wordPair = new WordPair(firstWord, secondWord, customHintBox.getText().toString());
+
+                // write the new word pair to file
+                writeJSONObject(buildJSONObject(wordPair));
+
                 // if neither box is empty, add strings to flashcard store and clear text
-                FlashcardStore.putWordPair(firstWord, secondWord, customHintBox.getText().toString());
+                FlashcardStore.putWordPair(wordPair);
                 firstWordBox.setText(R.string.empty_string);
                 secondWordBox.setText(R.string.empty_string);
                 customHintBox.setText(R.string.empty_string);

@@ -24,6 +24,10 @@ public class FlashcardStore {
         wordPairs.add(new WordPair(firstWord, secondWord, hint));
     }
 
+    public static void putWordPair(WordPair wordPair) {
+        wordPairs.add(wordPair);
+    }
+
     public static String getHint(String word) {
         for(WordPair pair : wordPairs) {
             if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
@@ -38,7 +42,7 @@ public class FlashcardStore {
     }
 
     public static WordPair getNextPair() {
-        if(wordPairs.get(NEXT_PAIR) != null)
+        if(NEXT_PAIR < wordPairs.size())
             return wordPairs.get(NEXT_PAIR++);
         else {
             NEXT_PAIR = 0;
