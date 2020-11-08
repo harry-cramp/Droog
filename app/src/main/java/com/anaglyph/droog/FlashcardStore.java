@@ -50,4 +50,12 @@ public class FlashcardStore {
         }
     }
 
+    public static boolean wordExists(String word) {
+        for(WordPair pair : wordPairs) {
+            if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
+                return true;
+        }
+        return false;
+    }
+
 }

@@ -90,6 +90,9 @@ public class NewFlashcard extends AppCompatActivity {
                 if(firstWord.equals(R.string.empty_string)) {
                     firstWordBox.setHint(R.string.empty_text_field_warning);
                     firstWordBox.setHintTextColor(getResources().getColor(R.color.colorWarning, null));
+                }else if(FlashcardStore.wordExists(firstWord)) {
+                    Toast.makeText(context, R.string.new_flashcard_exists_toast, Toast.LENGTH_SHORT).show();
+                    return;
                 }else {
                     firstWordBox.setHint(R.string.new_flashcard_word_1);
                     firstWordBox.setHintTextColor(getResources().getColor(R.color.colorHint, null));
@@ -99,6 +102,9 @@ public class NewFlashcard extends AppCompatActivity {
                 if(secondWord.equals(R.string.empty_string)) {
                     secondWordBox.setHint(R.string.empty_text_field_warning);
                     secondWordBox.setHintTextColor(getResources().getColor(R.color.colorWarning, null));
+                    return;
+                }else if(FlashcardStore.wordExists(secondWord)) {
+                    Toast.makeText(context, R.string.new_flashcard_exists_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     secondWordBox.setHint(R.string.new_flashcard_word_2);
