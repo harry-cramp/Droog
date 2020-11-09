@@ -24,4 +24,6 @@
     <string name="json_flashcard_second_word_tag">Word 2</string>
     <string name="json_flashcard_hint_tag">Hint</string>
     <string name="json_flashcard_pair_rank_tag">PairRank</string>
+    <string name="quiz_menu_subtitle">Duration:</string>
+
 </resources>
