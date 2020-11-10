@@ -95,6 +95,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button quizButton = (Button)findViewById(R.id.menuQuizButton);
+        quizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, QuizMenu.class);
+                startActivity(intent);
+            }
+        });
+
         final Button flashcardsButton = (Button)findViewById(R.id.menuFlashcardsButton);
         flashcardsButton.setOnClickListener(new View.OnClickListener() {
             @Override

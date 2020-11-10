@@ -28,6 +28,12 @@
             android:label="@string/new_flashcard_activity_name">
 
         </activity>
+
+        <activity android:name=".QuizMenu"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/quiz_activity_name">
+
+        </activity>
     </application>
 
 </manifest>

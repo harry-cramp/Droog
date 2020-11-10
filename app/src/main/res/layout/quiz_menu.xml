@@ -23,9 +23,18 @@
         android:text="@string/quiz_menu_subtitle" />
 
     <Spinner
+        android:id="@+id/durationSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
+
+    <Button
+        android:id="@+id/startQuizButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="60dp"
+        android:text="@string/quiz_menu_start_button" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@
     <string name="app_name">Droog</string>
     <string name="new_flashcard_activity_name">New Flashcard</string>
     <string name="flashcards_activity_name">Flashcards</string>
+    <string name="quiz_activity_name">Quiz</string>
     <string name="main_menu_icon_desc">Smiling face greeting you on the main menu</string>
     <string name="main_menu_flashcards_button">Flashcards</string>
     <string name="main_menu_quiz_button">Quiz</string>
@@ -25,5 +26,9 @@
     <string name="json_flashcard_hint_tag">Hint</string>
     <string name="json_flashcard_pair_rank_tag">PairRank</string>
     <string name="quiz_menu_subtitle">Duration:</string>
+    <string name="quiz_menu_short_duration">Short - </string>
+    <string name="quiz_menu_long_duration">Long - </string>
+    <string name="quiz_menu_duration_suffix"> questions</string>
+    <string name="quiz_menu_start_button">Start Quiz</string>
 
 </resources>
