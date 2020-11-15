@@ -1,7 +1,11 @@
 package com.anaglyph.droog;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +29,16 @@ public class QuizMenu extends AppCompatActivity {
 
         Spinner durationSpinner = (Spinner)findViewById(R.id.durationSpinner);
         durationSpinner.setAdapter(durationAdapter);
+
+        Button startQuizButton = (Button)findViewById(R.id.startQuizButton);
+        final Context context = this.getApplicationContext();
+        startQuizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, QuizPage.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

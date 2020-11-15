@@ -34,6 +34,12 @@
             android:label="@string/quiz_activity_name">
 
         </activity>
+
+        <activity android:name=".QuizPage"
+            android:parentActivityName=".QuizMenu"
+            android:label="@string/quiz_activity_name">
+
+        </activity>
     </application>
 
 </manifest>

@@ -2,12 +2,13 @@ package com.anaglyph.droog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class FlashcardStore {
 
     private static int NEXT_PAIR = 0;
 
-    public static ArrayList<WordPair> wordPairs = new ArrayList<WordPair>();
+    private static ArrayList<WordPair> wordPairs = new ArrayList<WordPair>();
 
     public static String getAnswer(String word) {
         for(WordPair pair : wordPairs) {
@@ -56,6 +57,19 @@ public class FlashcardStore {
                 return true;
         }
         return false;
+    }
+
+    public static String getRandomAnswer(String answer) {
+        Random random = new Random();
+
+        String randomWord = answer;
+        // random word should not be same as answer
+        while(randomWord.equals(answer)) {
+            WordPair wordPair = wordPairs.get(random.nextInt(wordPairs.size()));
+            randomWord = wordPair.getSecondWord();
+        }
+
+        return randomWord;
     }
 
 }
