@@ -59,6 +59,10 @@ public class FlashcardStore {
         return false;
     }
 
+    public static boolean isEmpty() {
+        return wordPairs.size() == 0;
+    }
+
     public static String getRandomAnswer(String answer) {
         Random random = new Random();
 
