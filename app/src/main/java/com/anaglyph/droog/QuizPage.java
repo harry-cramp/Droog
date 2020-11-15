@@ -11,20 +11,29 @@ import java.util.ArrayList;
 
 public class QuizPage extends AppCompatActivity {
 
+    private ArrayList<QuestionData> loadQuestionData() {
+        ArrayList<QuestionData> questions = new ArrayList<QuestionData>();
+        // run through word pair list and choose random possible answers
+        WordPair wordPair = FlashcardStore.getNextPair();
+        while(wordPair != null) {
+            String firstRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
+            String secondRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
+            while(firstRandomAnswer.equals(secondRandomAnswer))
+                secondRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
+            questions.add(new QuestionData(wordPair.getFirstWord(), wordPair.getSecondWord(), firstRandomAnswer, secondRandomAnswer));
+            wordPair = FlashcardStore.getNextPair();
+        }
+
+        return questions;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_page);
 
-        ArrayList<QuestionData> questions = new ArrayList<QuestionData>();
-        // run through word pair list and choose random possible answers
-        WordPair wordPair = FlashcardStore.getNextPair();
-        while(wordPair != null) {
-            questions.add(new QuestionData(wordPair.getFirstWord(), wordPair.getSecondWord(), FlashcardStore.getRandomAnswer(wordPair.getSecondWord()), FlashcardStore.getRandomAnswer(wordPair.getSecondWord())));
-            wordPair = FlashcardStore.getNextPair();
-        }
-
-        QuizQuestionAdapter quizQuestionAdapter = new QuizQuestionAdapter(this, questions);
+        // load question data into list
+        QuizQuestionAdapter quizQuestionAdapter = new QuizQuestionAdapter(this, loadQuestionData());
         final ListView list = (ListView)findViewById(R.id.quizList);
         list.setAdapter(quizQuestionAdapter);
     }
