@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class QuizQuestionAdapter implements ListAdapter {
 
@@ -20,6 +21,21 @@ public class QuizQuestionAdapter implements ListAdapter {
     public QuizQuestionAdapter(Context context, ArrayList<QuestionData> questionData) {
         this.context = context;
         this.questionData = questionData;
+    }
+
+    // takes quiz answer options and puts them into a randomised order
+    private String[] randomiseOptions(String[] options) {
+        String[] randomisedOptions = new String[options.length];
+        Random random = new Random();
+
+        for(String option : options) {
+            int randomIndex = random.nextInt(options.length);
+            while(randomisedOptions[randomIndex] != null)
+                randomIndex = random.nextInt(options.length);
+            randomisedOptions[randomIndex] = option;
+        }
+
+        return randomisedOptions;
     }
 
     @Override
@@ -69,7 +85,7 @@ public class QuizQuestionAdapter implements ListAdapter {
             RadioButton secondAnswerButton = (RadioButton)convertView.findViewById(R.id.answer2);
             RadioButton thirdAnswerButton = (RadioButton)convertView.findViewById(R.id.answer3);
             questionView.setText(question.getQuestion());
-            String[] answers = question.getAnswers();
+            String[] answers = randomiseOptions(question.getAnswers());
             firstAnswerButton.setText(answers[0]);
             secondAnswerButton.setText(answers[1]);
             thirdAnswerButton.setText(answers[2]);
