@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,11 +31,17 @@ public class QuizMenu extends AppCompatActivity {
         Spinner durationSpinner = (Spinner)findViewById(R.id.durationSpinner);
         durationSpinner.setAdapter(durationAdapter);
 
-        Button startQuizButton = (Button)findViewById(R.id.startQuizButton);
+        final Button startQuizButton = (Button)findViewById(R.id.startQuizButton);
+        final TextView errorPlaceholder = findViewById(R.id.errorTextNotEnoughData);
         final Context context = this.getApplicationContext();
         startQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(FlashcardStore.getWordPairCount() < SHORT_DURATION) {
+                    startQuizButton.setEnabled(false);
+                    errorPlaceholder.setText(getResources().getString(R.string.quiz_menu_error_insufficient_data));
+                    return;
+                }
                 Intent intent = new Intent(context, QuizPage.class);
                 startActivity(intent);
             }

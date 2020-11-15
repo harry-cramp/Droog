@@ -31,5 +31,6 @@
     <string name="quiz_menu_duration_suffix"> questions</string>
     <string name="quiz_menu_start_button">Start Quiz</string>
     <string name="quiz_menu_finish_button">Finish Quiz</string>
+    <string name="quiz_menu_error_insufficient_data">You must create at least 10 word pairs to start a quiz!</string>
 
 </resources>
