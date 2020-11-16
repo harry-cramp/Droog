@@ -40,6 +40,11 @@
             android:label="@string/quiz_activity_name">
 
         </activity>
+
+        <activity android:name=".QuizResults"
+            android:label="@string/quiz_results_activity_name">
+
+        </activity>
     </application>
 
 </manifest>

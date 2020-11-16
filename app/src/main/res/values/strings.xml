@@ -3,6 +3,7 @@
     <string name="new_flashcard_activity_name">New Flashcard</string>
     <string name="flashcards_activity_name">Flashcards</string>
     <string name="quiz_activity_name">Quiz</string>
+    <string name="quiz_results_activity_name">Quiz Results</string>
     <string name="main_menu_icon_desc">Smiling face greeting you on the main menu</string>
     <string name="main_menu_flashcards_button">Flashcards</string>
     <string name="main_menu_quiz_button">Quiz</string>
@@ -33,5 +34,7 @@
     <string name="quiz_menu_finish_button">Finish Quiz</string>
     <string name="quiz_menu_error_insufficient_data_short">You must create at least 10 word pairs to start a short quiz!</string>
     <string name="quiz_menu_error_insufficient_data_long">You must create at least 25 word pairs to start a short quiz!</string>
+    <string name="quiz_results_result">Your score:</string>
+    <string name="quiz_results_intent_count">QUESTION_COUNT</string>
 
 </resources>

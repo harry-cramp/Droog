@@ -2,6 +2,8 @@ package com.anaglyph.droog;
 
 public class QuestionData {
 
+    private boolean correct;
+
     private String question;
     private String correctAnswer;
     private String[] answers;
@@ -13,6 +15,14 @@ public class QuestionData {
         this.answers[0] = answers[0];
         this.answers[1] = answers[1];
         this.answers[2] = correctAnswer;
+    }
+
+    public boolean isCorrect() {
+        return correct;
+    }
+
+    public void setCorrect() {
+        correct = true;
     }
 
     public String getQuestion() {

@@ -61,7 +61,7 @@ public class QuizQuestionAdapter implements ListAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return questionData.get(position);
     }
 
     @Override
@@ -76,19 +76,44 @@ public class QuizQuestionAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        QuestionData question = questionData.get(position);
+        final QuestionData question = questionData.get(position);
         if(convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.question_fragment, null);
             TextView questionView = (TextView)convertView.findViewById(R.id.questionText);
-            RadioButton firstAnswerButton = (RadioButton)convertView.findViewById(R.id.answer1);
-            RadioButton secondAnswerButton = (RadioButton)convertView.findViewById(R.id.answer2);
-            RadioButton thirdAnswerButton = (RadioButton)convertView.findViewById(R.id.answer3);
+            final RadioButton firstAnswerButton = (RadioButton)convertView.findViewById(R.id.answer1);
+            final RadioButton secondAnswerButton = (RadioButton)convertView.findViewById(R.id.answer2);
+            final RadioButton thirdAnswerButton = (RadioButton)convertView.findViewById(R.id.answer3);
             questionView.setText(question.getQuestion());
             String[] answers = randomiseOptions(question.getAnswers());
             firstAnswerButton.setText(answers[0]);
             secondAnswerButton.setText(answers[1]);
             thirdAnswerButton.setText(answers[2]);
+
+            // set question to answered correctly if correct answer chosen
+            firstAnswerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(firstAnswerButton.getText().toString().equals(question.getCorrectAnswer()))
+                        question.setCorrect();
+                }
+            });
+
+            secondAnswerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(secondAnswerButton.getText().toString().equals(question.getCorrectAnswer()))
+                        question.setCorrect();
+                }
+            });
+
+            thirdAnswerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(thirdAnswerButton.getText().toString().equals(question.getCorrectAnswer()))
+                        question.setCorrect();
+                }
+            });
         }
         return convertView;
     }

@@ -61,6 +61,7 @@ public class QuizMenu extends AppCompatActivity {
                 }
                 Intent intent = new Intent(context, QuizPage.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

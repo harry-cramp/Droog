@@ -1,5 +1,6 @@
 package com.anaglyph.droog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class QuizPage extends AppCompatActivity {
+
+    private QuizQuestionAdapter quizQuestionAdapter;
 
     private ArrayList<QuestionData> loadQuestionData() {
         ArrayList<QuestionData> questions = new ArrayList<QuestionData>();
@@ -33,7 +36,7 @@ public class QuizPage extends AppCompatActivity {
         setContentView(R.layout.quiz_page);
 
         // load question data into list
-        QuizQuestionAdapter quizQuestionAdapter = new QuizQuestionAdapter(this, loadQuestionData());
+        quizQuestionAdapter = new QuizQuestionAdapter(this, loadQuestionData());
         final ListView list = (ListView)findViewById(R.id.quizList);
         list.setAdapter(quizQuestionAdapter);
     }
@@ -43,6 +46,14 @@ public class QuizPage extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.action_finish_quiz:
                 // show results screen
+                Intent intent = new Intent(this, QuizResults.class);
+                intent.putExtra(getResources().getString(R.string.quiz_results_intent_count), quizQuestionAdapter.getCount());
+                for(int i = 0; i < quizQuestionAdapter.getCount(); i++) {
+                    QuestionData questionData = (QuestionData)quizQuestionAdapter.getItem(i);
+                    intent.putExtra("" + i, questionData.isCorrect());
+                }
+                startActivity(intent);
+                finish();
                 return true;
 
             default:
