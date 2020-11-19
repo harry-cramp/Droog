@@ -8,6 +8,7 @@
     <string name="main_menu_flashcards_button">Flashcards</string>
     <string name="main_menu_quiz_button">Quiz</string>
     <string name="main_menu_new_flashcard_button">New flashcard</string>
+    <string name="main_menu_no_flashcards_warning">You must make some flashcards first!</string>
     <string name="new_flashcard_word_1">Word 1</string>
     <string name="new_flashcard_word_2">Word 2</string>
     <string name="new_flashcard_auto_hints_checkbox">Automatic Hints</string>

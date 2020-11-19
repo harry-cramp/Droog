@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
         flashcardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(FlashcardStore.isEmpty()) {
+                    Toast.makeText(context, R.string.main_menu_no_flashcards_warning, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(context, Flashcards.class);
                 startActivity(intent);
             }
