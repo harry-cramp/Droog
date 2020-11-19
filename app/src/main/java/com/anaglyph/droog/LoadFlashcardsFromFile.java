@@ -45,7 +45,9 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
             String secondWord = data.get(i + 1);
 
             writeToOutputBox("LOADING " + firstWord + " -> " + secondWord);
-            FlashcardStore.putWordPair(firstWord, secondWord, null);
+            WordPair newPair = new WordPair(firstWord, secondWord, null);
+            NewFlashcard.storeWordPairData(newPair, getApplicationContext().getFilesDir());
+            FlashcardStore.putWordPair(newPair);
         }
         writeToOutputBox("DONE.");
     }

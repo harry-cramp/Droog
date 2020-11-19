@@ -32,12 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
     private WordPair buildWordPairFromJSON(String jsonString) {
         try {
+            Log.v("BUILD FROM JSON", "WAP, BAP, BA DE BAP BAP!");
             JSONObject jsonObject = new JSONObject(jsonString);
 
-            String firstWord = jsonObject.getString(getResources().getString(R.string.json_flashcard_first_word_tag));
-            String secondWord = jsonObject.getString(getResources().getString(R.string.json_flashcard_second_word_tag));
-            String hint = jsonObject.getString(getResources().getString(R.string.json_flashcard_hint_tag));
-            int pairRank = jsonObject.getInt(getResources().getString(R.string.json_flashcard_pair_rank_tag));
+            String firstWord = jsonObject.getString(NewFlashcard.JSON_FIELD_FIRST_WORD);
+            String secondWord = jsonObject.getString(NewFlashcard.JSON_FIELD_SECOND_WORD);
+            String hint = jsonObject.getString(NewFlashcard.JSON_FIELD_HINT);
+            int pairRank = jsonObject.getInt(NewFlashcard.JSON_FIELD_PAIR_RANK);
+
+            Log.v("BUILD FROM JSON", "FIRST WORD: \t" + firstWord);
+            Log.v("BUILD FROM JSON", "SECOND WORD: \t" + secondWord);
+            Log.v("BUILD FROM JSON", "HINT: \t" + hint);
+            Log.v("BUILD FROM JSON", "PAIRRANK: \t" + pairRank);
 
             WordPair wordPair = new WordPair(firstWord, secondWord, hint);
             wordPair.setPairRank(pairRank);
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             fileReader.close();
 
             String response = stringBuilder.toString();
+            Log.v("LOAD FROM JSON", response);
             FlashcardStore.putWordPair(buildWordPairFromJSON(response));
         }catch (IOException e) {
             e.printStackTrace();

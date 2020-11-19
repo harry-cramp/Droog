@@ -11,7 +11,7 @@ public class WordPair {
     public WordPair(String firstWord, String secondWord, String hint) {
         this.firstWord = firstWord;
         this.secondWord = secondWord;
-        this.hint = hint;
+        this.hint = (hint == null || hint.isEmpty()) ? "empty" : hint;
     }
 
     public int getPairRank() {

@@ -25,13 +25,18 @@ import java.io.IOException;
 
 public class NewFlashcard extends AppCompatActivity {
 
-    private JSONObject buildJSONObject(WordPair wordPair) {
+    public static final String JSON_FIELD_FIRST_WORD = "Word 1";
+    public static final String JSON_FIELD_SECOND_WORD = "Word 2";
+    public static final String JSON_FIELD_HINT = "Hint";
+    public static final String JSON_FIELD_PAIR_RANK = "PairRank";
+
+    private static JSONObject buildJSONObject(WordPair wordPair) {
         try {
             JSONObject pairJSON = new JSONObject();
-            pairJSON.put(getResources().getString(R.string.json_flashcard_first_word_tag), wordPair.getFirstWord());
-            pairJSON.put(getResources().getString(R.string.json_flashcard_second_word_tag), wordPair.getSecondWord());
-            pairJSON.put(getResources().getString(R.string.json_flashcard_hint_tag), wordPair.getHint());
-            pairJSON.put(getResources().getString(R.string.json_flashcard_pair_rank_tag), wordPair.getPairRank());
+            pairJSON.put(JSON_FIELD_FIRST_WORD, wordPair.getFirstWord());
+            pairJSON.put(JSON_FIELD_SECOND_WORD, wordPair.getSecondWord());
+            pairJSON.put(JSON_FIELD_HINT, wordPair.getHint());
+            pairJSON.put(JSON_FIELD_PAIR_RANK, wordPair.getPairRank());
             return pairJSON;
         }catch (JSONException e) {
             e.printStackTrace();
@@ -40,12 +45,12 @@ public class NewFlashcard extends AppCompatActivity {
         return null;
     }
 
-    private String writeJSONObject(JSONObject jsonObject) {
+    private static String writeJSONObject(JSONObject jsonObject, File filesDir) {
         String jsonString = jsonObject.toString();
 
         try {
-            File file = new File(getApplicationContext().getFilesDir(), (String)jsonObject.get("Word 1"));
-
+            File file = new File(filesDir, (String)jsonObject.get("Word 1"));
+            Log.v("FILE DIR", file.getAbsolutePath());
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(jsonString);
@@ -58,6 +63,10 @@ public class NewFlashcard extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    public static void storeWordPairData(WordPair wordPair, File filesDir) {
+        writeJSONObject(buildJSONObject(wordPair), filesDir);
     }
 
     @Override
@@ -117,7 +126,7 @@ public class NewFlashcard extends AppCompatActivity {
                 WordPair wordPair = new WordPair(firstWord, secondWord, customHintBox.getText().toString());
 
                 // write the new word pair to file
-                writeJSONObject(buildJSONObject(wordPair));
+                writeJSONObject(buildJSONObject(wordPair), getApplicationContext().getFilesDir());
 
                 // if neither box is empty, add strings to flashcard store and clear text
                 FlashcardStore.putWordPair(wordPair);
