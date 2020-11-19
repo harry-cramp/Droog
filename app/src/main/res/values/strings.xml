@@ -16,6 +16,7 @@
     <string name="new_flashcard_button">Add flashcard</string>
     <string name="new_flashcard_toast">New flashcard created!</string>
     <string name="new_flashcard_exists_toast">Flashcard already exists!</string>
+    <string name="new_flashcard_load_from_file">Load from file</string>
     <string name="empty_text_field_warning">Please fill something in</string>
     <string name="flashcard_hint_button">Hint</string>
     <string name="flashcard_reveal_button">Reveal</string>
@@ -36,5 +37,14 @@
     <string name="quiz_menu_error_insufficient_data_long">You must create at least 25 word pairs to start a short quiz!</string>
     <string name="quiz_results_result">Your score:</string>
     <string name="quiz_results_intent_count">QUESTION_COUNT</string>
+    <string name="new_flashcard_from_file_title">Load flashcards from file</string>
+    <string name="new_flashcard_from_file_desc">You can load multiple word pairs at once from a file rather than typing them all through the app. Simply type the word pairs up, one word on each line, with every second word corresponding to the word above it, like so:</string>
+    <string name="from_file_eg_tree">tree</string>
+    <string name="from_file_eg_baum">der Baum</string>
+    <string name="from_file_eg_cat">cat</string>
+    <string name="from_file_eg_katze">die Katze</string>
+    <string name="from_file_eg_eye">eye</string>
+    <string name="from_file_eg_auge">das Auge</string>
+    <string name="ellipsis">...</string>
 
 </resources>

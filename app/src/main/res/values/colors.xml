@@ -6,4 +6,5 @@
     <color name="colorWarning">#FF0000</color>
     <color name="colorHint">#B7B7B7</color>
     <color name="colorFont">#000000</color>
+    <color name="colorBackground">#FFFFFF</color>
 </resources>

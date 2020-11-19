@@ -1,8 +1,11 @@
 package com.anaglyph.droog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -124,6 +127,25 @@ public class NewFlashcard extends AppCompatActivity {
                 Toast.makeText(context, R.string.new_flashcard_toast, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_load_from_file:
+                Intent intent = new Intent(this, LoadFlashcardsFromFile.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.new_flashcard_menu, menu);
+        return true;
     }
 
 }
