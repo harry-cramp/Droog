@@ -29,18 +29,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginVertical="10dp"
         android:textColorHint="@color/colorHint"
         android:ems="10"
         android:hint="@string/new_flashcard_word_2"
         android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/charLimitWarningText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorWarning"
+        android:text="@string/new_flashcard_exceeds_max_length_warning"
+        android:visibility="gone" />
 
     <CheckBox
         android:id="@+id/newFlashcardAutoHintsBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/new_flashcard_auto_hints_checkbox" />
 
     <EditText

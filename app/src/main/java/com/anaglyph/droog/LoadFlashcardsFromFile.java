@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,10 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
             String secondWord = data.get(i + 1);
 
             writeToOutputBox("LOADING " + firstWord + " -> " + secondWord);
+            if(firstWord.length() > NewFlashcard.NEW_FLASHCARD_MAX_LENGTH || secondWord.length() > NewFlashcard.NEW_FLASHCARD_MAX_LENGTH) {
+                writeToOutputBox("INPUT EXCEEDS 120 CHARACTERS, SKIPPING");
+                continue;
+            }
             WordPair newPair = new WordPair(firstWord, secondWord, null);
             NewFlashcard.storeWordPairData(newPair, getApplicationContext().getFilesDir());
             FlashcardStore.putWordPair(newPair);

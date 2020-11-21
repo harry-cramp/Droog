@@ -25,6 +25,8 @@ import java.io.IOException;
 
 public class NewFlashcard extends AppCompatActivity {
 
+    public static final int NEW_FLASHCARD_MAX_LENGTH = 120;
+
     public static final String JSON_FIELD_FIRST_WORD = "Word 1";
     public static final String JSON_FIELD_SECOND_WORD = "Word 2";
     public static final String JSON_FIELD_HINT = "Hint";
@@ -90,6 +92,7 @@ public class NewFlashcard extends AppCompatActivity {
         // warn user if button is pressed without filling in either text box
         final TextView firstWordBox = (TextView)findViewById(R.id.newFlashcardWord1);
         final TextView secondWordBox = (TextView)findViewById(R.id.newFlashcardWord2);
+        final TextView maxLengthWarningBox = findViewById(R.id.charLimitWarningText);
         final Button newFlashcardButton = (Button)findViewById(R.id.newFlashcardButton);
 
         final Context context = this.getApplicationContext();
@@ -106,6 +109,10 @@ public class NewFlashcard extends AppCompatActivity {
                     Toast.makeText(context, R.string.new_flashcard_exists_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }else {
+                    if(firstWord.length() > NEW_FLASHCARD_MAX_LENGTH) {
+                        maxLengthWarningBox.setVisibility(View.VISIBLE);
+                        return;
+                    }
                     firstWordBox.setHint(R.string.new_flashcard_word_1);
                     firstWordBox.setHintTextColor(getResources().getColor(R.color.colorHint, null));
                 }
@@ -119,9 +126,15 @@ public class NewFlashcard extends AppCompatActivity {
                     Toast.makeText(context, R.string.new_flashcard_exists_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }else {
+                    if(secondWord.length() > NEW_FLASHCARD_MAX_LENGTH) {
+                        maxLengthWarningBox.setVisibility(View.VISIBLE);
+                        return;
+                    }
                     secondWordBox.setHint(R.string.new_flashcard_word_2);
                     secondWordBox.setHintTextColor(getResources().getColor(R.color.colorHint, null));
                 }
+
+                maxLengthWarningBox.setVisibility(View.GONE);
 
                 WordPair wordPair = new WordPair(firstWord, secondWord, customHintBox.getText().toString());
 
