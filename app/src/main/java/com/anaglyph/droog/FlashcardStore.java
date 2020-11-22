@@ -1,14 +1,14 @@
 package com.anaglyph.droog;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class FlashcardStore {
 
     private static int NEXT_PAIR = 0;
 
-    private static ArrayList<WordPair> wordPairs = new ArrayList<WordPair>();
+    private static LinkedList<WordPair> wordPairs = new LinkedList<WordPair>();
 
     public static String getAnswer(String word) {
         for(WordPair pair : wordPairs) {
@@ -22,11 +22,27 @@ public class FlashcardStore {
     }
 
     public static void putWordPair(String firstWord, String secondWord, String hint) {
-        wordPairs.add(new WordPair(firstWord, secondWord, hint));
+        putWordPair(new WordPair(firstWord, secondWord, hint));
     }
 
     public static void putWordPair(WordPair wordPair) {
+        for(int i = 0; i < wordPairs.size(); i++) {
+            WordPair comparePair = wordPairs.get(i);
+            if(wordPair.getPairRank() < comparePair.getPairRank()) {
+                wordPairs.add(i, wordPair);
+                return;
+            }
+        }
         wordPairs.add(wordPair);
+    }
+
+    public static void rebuildList() {
+        LinkedList<WordPair> newPairList = new LinkedList<WordPair>();
+        for(WordPair wordPair : wordPairs)
+            newPairList.add(wordPair);
+        wordPairs.clear();
+        for(WordPair wordPair : newPairList)
+            putWordPair(wordPair);
     }
 
     public static String getHint(String word) {
@@ -47,6 +63,7 @@ public class FlashcardStore {
             return wordPairs.get(NEXT_PAIR++);
         else {
             NEXT_PAIR = 0;
+            rebuildList();
             return null;
         }
     }
@@ -74,6 +91,11 @@ public class FlashcardStore {
         }
 
         return randomWord;
+    }
+
+    public static void saveFlashcardData(File filesDir) {
+        for(WordPair wordPair : wordPairs)
+            NewFlashcard.storeWordPairData(wordPair, filesDir);
     }
 
 }

@@ -20,16 +20,26 @@ public class WordPair {
         return pairRank;
     }
 
+    public void increasePairRank() {
+        pairRank++;
+    }
+
+    public void decreasePairRank() {
+        pairRank--;
+        if(pairRank < 0)
+            pairRank = 0;
+    }
+
+    public void setPairRank(int pairRank) {
+        this.pairRank = pairRank;
+    }
+
     public boolean isReversed() {
         return reversed;
     }
 
     public void setReversed(boolean reversed) {
         this.reversed = reversed;
-    }
-
-    public void setPairRank(int pairRank) {
-        this.pairRank = pairRank;
     }
 
     public String getFirstWord() {

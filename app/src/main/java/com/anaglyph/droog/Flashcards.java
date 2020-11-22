@@ -70,6 +70,8 @@ public class Flashcards extends AppCompatActivity {
                     hintBox.setText(wordPair.getHint());
                 else {
                     // bad button
+                    wordPair.decreasePairRank();
+                    NewFlashcard.storeWordPairData(wordPair, getFilesDir());
                     reset();
                 }
             }
@@ -85,6 +87,8 @@ public class Flashcards extends AppCompatActivity {
                     revealed = true;
                 }else {
                     // good button
+                    wordPair.increasePairRank();
+                    NewFlashcard.storeWordPairData(wordPair, getFilesDir());
                     reset();
                 }
             }
