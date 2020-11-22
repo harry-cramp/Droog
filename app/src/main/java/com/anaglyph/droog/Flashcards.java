@@ -8,11 +8,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Random;
+
 public class Flashcards extends AppCompatActivity {
 
     private boolean revealed;
 
     private WordPair wordPair;
+    private Random random;
 
     private void reset() {
         wordPair = FlashcardStore.getNextPair();
@@ -29,7 +32,10 @@ public class Flashcards extends AppCompatActivity {
         final Button hintButton = (Button)findViewById(R.id.hintButton);
         final Button revealButton = (Button)findViewById(R.id.revealButton);
 
-        firstWordBox.setText(wordPair.getFirstWord());
+        boolean reversed = random.nextBoolean();
+        firstWordBox.setText((!reversed) ? wordPair.getFirstWord() : wordPair.getSecondWord());
+        wordPair.setReversed(reversed);
+
         secondWordBox.setText(R.string.empty_string);
         hintBox.setText(R.string.empty_string);
         hintButton.setText(R.string.flashcard_hint_button);
@@ -42,6 +48,7 @@ public class Flashcards extends AppCompatActivity {
         setContentView(R.layout.activity_flashcards);
 
         revealed = false;
+        random = new Random();
 
         wordPair = FlashcardStore.getNextPair();
         if(wordPair == null)
@@ -72,7 +79,7 @@ public class Flashcards extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!revealed) {
-                    secondWordBox.setText(wordPair.getSecondWord());
+                    secondWordBox.setText((!wordPair.isReversed()) ? wordPair.getSecondWord() : wordPair.getFirstWord());
                     hintButton.setText(R.string.flashcard_bad_button);
                     revealButton.setText(R.string.flashcard_good_button);
                     revealed = true;

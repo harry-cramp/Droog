@@ -4,6 +4,8 @@ public class WordPair {
 
     int pairRank;
 
+    private boolean reversed;
+
     String firstWord;
     String secondWord;
     String hint;
@@ -16,6 +18,14 @@ public class WordPair {
 
     public int getPairRank() {
         return pairRank;
+    }
+
+    public boolean isReversed() {
+        return reversed;
+    }
+
+    public void setReversed(boolean reversed) {
+        this.reversed = reversed;
     }
 
     public void setPairRank(int pairRank) {
