@@ -36,7 +36,7 @@
     <string name="quiz_menu_start_button">Start Quiz</string>
     <string name="quiz_menu_finish_button">Finish Quiz</string>
     <string name="quiz_menu_error_insufficient_data_short">You must create at least 10 word pairs to start a short quiz!</string>
-    <string name="quiz_menu_error_insufficient_data_long">You must create at least 25 word pairs to start a short quiz!</string>
+    <string name="quiz_menu_error_insufficient_data_long">You must create at least 25 word pairs to start a long quiz!</string>
     <string name="quiz_results_result">Your score:</string>
     <string name="quiz_results_intent_count">QUESTION_COUNT</string>
     <string name="new_flashcard_from_file_title">Load flashcards from file</string>
