@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -45,6 +46,18 @@ public class QuizMenu extends AppCompatActivity {
         durationSpinner.setAdapter(durationAdapter);
 
         startQuizButton = (Button)findViewById(R.id.startQuizButton);
+
+        durationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                startQuizButton.setEnabled(true);
+                errorPlaceholder.setText(R.string.empty_string);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
         errorPlaceholder = findViewById(R.id.errorTextNotEnoughData);
         final Context context = this.getApplicationContext();
         startQuizButton.setOnClickListener(new View.OnClickListener() {
