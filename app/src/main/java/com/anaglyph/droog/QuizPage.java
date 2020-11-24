@@ -14,11 +14,13 @@ public class QuizPage extends AppCompatActivity {
 
     private QuizQuestionAdapter quizQuestionAdapter;
 
-    private ArrayList<QuestionData> loadQuestionData() {
+    private ArrayList<QuestionData> loadQuestionData(Intent intent) {
         ArrayList<QuestionData> questions = new ArrayList<QuestionData>();
         // run through word pair list and choose random possible answers
         WordPair wordPair = FlashcardStore.getNextPair();
-        while(wordPair != null) {
+        int quizLength = intent.getIntExtra(QuizMenu.QUIZ_LENGTH_KEY, QuizMenu.SHORT_DURATION);
+        int index = 0;
+        while(index++ < quizLength) {
             String firstRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
             String secondRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
             while(firstRandomAnswer.equals(secondRandomAnswer))
@@ -36,7 +38,7 @@ public class QuizPage extends AppCompatActivity {
         setContentView(R.layout.quiz_page);
 
         // load question data into list
-        quizQuestionAdapter = new QuizQuestionAdapter(this, loadQuestionData());
+        quizQuestionAdapter = new QuizQuestionAdapter(this, loadQuestionData(getIntent()));
         final ListView list = (ListView)findViewById(R.id.quizList);
         list.setAdapter(quizQuestionAdapter);
     }

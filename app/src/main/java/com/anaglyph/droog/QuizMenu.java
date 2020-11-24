@@ -18,8 +18,11 @@ public class QuizMenu extends AppCompatActivity {
 
     private final int OPTION_SHORT = 0;
     private final int OPTION_LONG = 1;
-    private final int SHORT_DURATION = 10;
-    private final int LONG_DURATION = 25;
+
+    public static final int SHORT_DURATION = 10;
+    public static final int LONG_DURATION = 25;
+
+    public static final String QUIZ_LENGTH_KEY = "QUIZ_LENGTH";
 
     private Button startQuizButton;
     private TextView errorPlaceholder;
@@ -73,6 +76,7 @@ public class QuizMenu extends AppCompatActivity {
                     return;
                 }
                 Intent intent = new Intent(context, QuizPage.class);
+                intent.putExtra(QUIZ_LENGTH_KEY, (durationSpinner.getSelectedItemPosition() == OPTION_SHORT) ? SHORT_DURATION : LONG_DURATION);
                 startActivity(intent);
                 finish();
             }
