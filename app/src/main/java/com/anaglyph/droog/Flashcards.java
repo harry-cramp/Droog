@@ -1,7 +1,10 @@
 package com.anaglyph.droog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +16,10 @@ import java.util.Random;
 public class Flashcards extends AppCompatActivity {
 
     private boolean revealed;
+
+    public static final String FLASHCARD_FIRST_WORD_TAG = "FIRST_WORD";
+    public static final String FLASHCARD_SECOND_WORD_TAG = "SECOND_TAG";
+    public static final String FLASHCARD_HINT_TAG = "HINT_TAG";
 
     private WordPair wordPair;
     private Random random;
@@ -93,6 +100,29 @@ public class Flashcards extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_edit_flashcard:
+                Intent intent = new Intent(this, NewFlashcard.class);
+                intent.putExtra(FLASHCARD_FIRST_WORD_TAG, wordPair.getFirstWord());
+                intent.putExtra(FLASHCARD_SECOND_WORD_TAG, wordPair.getSecondWord());
+                intent.putExtra(FLASHCARD_HINT_TAG, wordPair.getHint());
+                intent.putExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, true);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.flashcards_menu, menu);
+        return true;
     }
 
 }

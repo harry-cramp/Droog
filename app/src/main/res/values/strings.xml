@@ -19,6 +19,8 @@
     <string name="new_flashcard_exists_toast">Flashcard already exists!</string>
     <string name="new_flashcard_load_from_file">Load from file</string>
     <string name="new_flashcard_exceeds_max_length_warning">Text cannot exceed 120 characters!</string>
+    <string name="new_flashcard_edit_button_text">Save changes</string>
+    <string name="edit_flashcard_icon_subtitle">Edit Flashcard</string>
     <string name="empty_text_field_warning">Please fill something in</string>
     <string name="flashcard_hint_button">Hint</string>
     <string name="flashcard_reveal_button">Reveal</string>

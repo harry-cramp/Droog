@@ -27,6 +27,10 @@ public class NewFlashcard extends AppCompatActivity {
 
     public static final int NEW_FLASHCARD_MAX_LENGTH = 120;
 
+    private boolean editMode;
+
+    private String editFlashcardFirstWord;
+
     public static final String JSON_FIELD_FIRST_WORD = "Word 1";
     public static final String JSON_FIELD_SECOND_WORD = "Word 2";
     public static final String JSON_FIELD_HINT = "Hint";
@@ -77,6 +81,9 @@ public class NewFlashcard extends AppCompatActivity {
 
         setContentView(R.layout.new_flashcard);
 
+        Intent intent = getIntent();
+        editMode = intent.getBooleanExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, false);
+
         // Handle interactions with page elements
         final CheckBox autoHintsBox = (CheckBox)findViewById(R.id.newFlashcardAutoHintsBox);
         final TextView customHintBox = (TextView)findViewById(R.id.newFlashcardCustomHint);
@@ -95,11 +102,36 @@ public class NewFlashcard extends AppCompatActivity {
         final TextView maxLengthWarningBox = findViewById(R.id.charLimitWarningText);
         final Button newFlashcardButton = (Button)findViewById(R.id.newFlashcardButton);
 
+        if(editMode) {
+            newFlashcardButton.setText(R.string.new_flashcard_edit_button_text);
+
+            firstWordBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_FIRST_WORD_TAG));
+            secondWordBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_SECOND_WORD_TAG));
+            customHintBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_HINT_TAG));
+
+            editFlashcardFirstWord = intent.getStringExtra(Flashcards.FLASHCARD_FIRST_WORD_TAG);
+        }
+
         final Context context = this.getApplicationContext();
         newFlashcardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v("NEW FLASHCARD ON CLICK", "Button clicked");
+
+                if(editMode) {
+                    // delete edited word pair
+                    WordPair pair = FlashcardStore.getPairFromWord(editFlashcardFirstWord);
+                    FlashcardStore.deleteWordPair(getFilesDir(), pair);
+
+                    // create new word pair
+                    WordPair newPair = new WordPair(firstWordBox.getText().toString(), secondWordBox.getText().toString(), customHintBox.getText().toString());
+                    newPair.setPairRank(pair.getPairRank());
+                    FlashcardStore.putWordPair(newPair);
+                    storeWordPairData(newPair, getFilesDir());
+
+                    // exit activity and return to flashcard review section
+                    finish();
+                }
 
                 String firstWord = firstWordBox.getText().toString();
                 if(firstWord.equals(R.string.empty_string)) {

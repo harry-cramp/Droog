@@ -1,6 +1,13 @@
 package com.anaglyph.droog;
 
+import android.util.Log;
+
+import org.json.JSONException;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -66,6 +73,31 @@ public class FlashcardStore {
             rebuildList();
             return null;
         }
+    }
+
+    public static WordPair getPairFromWord(String word) {
+        for(WordPair pair : wordPairs) {
+            if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
+                return pair;
+        }
+        return null;
+    }
+
+    public static void deleteWordPair(File filesDir, WordPair wordPair) {
+        File file = new File(filesDir, wordPair.getFirstWord());
+
+        boolean deleted = file.delete();
+        Log.v("DELETE WORD PAIR", "SUCCESS: " + deleted);
+        if(deleted) {
+            for(int i = 0; i < wordPairs.size(); i++) {
+                if(wordPair.equals(wordPairs.get(i))) {
+                    wordPairs.remove(wordPair);
+                    Log.v("DELETE WORD PAIR", "WORD PAIR FULLY REMOVED");
+                    return;
+                }
+            }
+        }
+        Log.v("DELETE WORD PAIR", "WORD PAIR NOT REMOVED FROM MEMORY");
     }
 
     public static boolean wordExists(String word) {

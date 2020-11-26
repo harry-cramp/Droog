@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
      *  Date: November 2020
      */
 
+    public static final String FLASHCARD_EDIT_MODE_TAG = "EDIT_MODE";
+
     private WordPair buildWordPairFromJSON(String jsonString) {
         try {
             Log.v("BUILD FROM JSON", "WAP, BAP, BA DE BAP BAP!");
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, NewFlashcard.class);
+                intent.putExtra(FLASHCARD_EDIT_MODE_TAG, false);
                 startActivity(intent);
             }
         });
