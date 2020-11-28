@@ -18,13 +18,41 @@
         android:textAlignment="center"
         android:text="" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/revealHintBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24dp"
         android:layout_margin="20dp"
-        android:text="" />
+        android:text="" />-->
+
+    <RadioGroup
+        android:id="@+id/flashcardOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_margin="20dp">
+
+        <RadioButton
+            android:id="@+id/flashcardOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/flashcardOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/flashcardOption3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </RadioGroup>
 
     <TextView
         android:id="@+id/revealWord2Box"

@@ -21,11 +21,7 @@ public class QuizPage extends AppCompatActivity {
         int quizLength = intent.getIntExtra(QuizMenu.QUIZ_LENGTH_KEY, QuizMenu.SHORT_DURATION);
         int index = 0;
         while(index++ < quizLength) {
-            String firstRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
-            String secondRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
-            while(firstRandomAnswer.equals(secondRandomAnswer))
-                secondRandomAnswer = FlashcardStore.getRandomAnswer(wordPair.getSecondWord());
-            questions.add(new QuestionData(wordPair.getFirstWord(), wordPair.getSecondWord(), firstRandomAnswer, secondRandomAnswer));
+            questions.add(FlashcardStore.generateQuestionData(wordPair, false));
             wordPair = FlashcardStore.getNextPair();
         }
 

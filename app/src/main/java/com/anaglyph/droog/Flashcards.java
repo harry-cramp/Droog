@@ -3,10 +3,13 @@ package com.anaglyph.droog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,8 @@ import java.util.Random;
 public class Flashcards extends AppCompatActivity {
 
     private boolean revealed;
+    private boolean reversed;
+    private boolean correctOption;
 
     public static final String FLASHCARD_FIRST_WORD_TAG = "FIRST_WORD";
     public static final String FLASHCARD_SECOND_WORD_TAG = "SECOND_TAG";
@@ -23,6 +28,14 @@ public class Flashcards extends AppCompatActivity {
 
     private WordPair wordPair;
     private Random random;
+    private Button hintButton;
+    private Button revealButton;
+    private RadioGroup flashcardOptions;
+
+    private RadioButton flashcardFirstOption;
+    private RadioButton flashcardSecondOption;
+    private RadioButton flashcardThirdOption;
+    private RadioButton flashcardCorrectOption;
 
     private void reset() {
         wordPair = FlashcardStore.getNextPair();
@@ -35,18 +48,44 @@ public class Flashcards extends AppCompatActivity {
 
         final TextView firstWordBox = (TextView)findViewById(R.id.revealWord1Box);
         final TextView secondWordBox = (TextView)findViewById(R.id.revealWord2Box);
-        final TextView hintBox = (TextView)findViewById(R.id.revealHintBox);
-        final Button hintButton = (Button)findViewById(R.id.hintButton);
-        final Button revealButton = (Button)findViewById(R.id.revealButton);
+        //final TextView hintBox = (TextView)findViewById(R.id.revealHintBox);
+        //final Button hintButton = (Button)findViewById(R.id.hintButton);
+        //final Button revealButton = (Button)findViewById(R.id.revealButton);
 
-        boolean reversed = random.nextBoolean();
+        flashcardOptions = findViewById(R.id.flashcardOptions);
+        flashcardFirstOption = findViewById(R.id.flashcardOption1);
+        flashcardSecondOption = findViewById(R.id.flashcardOption2);
+        flashcardThirdOption = findViewById(R.id.flashcardOption3);
+
+        flashcardOptions.setVisibility(View.GONE);
+        Log.v("TRIGGER", "I'M TRIGGGGEREDDDD");
+
+        flashcardFirstOption.setChecked(false);
+        flashcardSecondOption.setChecked(false);
+        flashcardThirdOption.setChecked(false);
+
+        flashcardFirstOption.setEnabled(true);
+        flashcardSecondOption.setEnabled(true);
+        flashcardThirdOption.setEnabled(true);
+
+        reversed = random.nextBoolean();
         firstWordBox.setText((!reversed) ? wordPair.getFirstWord() : wordPair.getSecondWord());
         wordPair.setReversed(reversed);
 
         secondWordBox.setText(R.string.empty_string);
-        hintBox.setText(R.string.empty_string);
+        //hintBox.setText(R.string.empty_string);
+        hintButton.setVisibility(View.VISIBLE);
         hintButton.setText(R.string.flashcard_hint_button);
         revealButton.setText(R.string.flashcard_reveal_button);
+    }
+
+    private void nextPair(boolean good) {
+        if(!good)
+            wordPair.decreasePairRank();
+        else
+            wordPair.increasePairRank();
+        NewFlashcard.storeWordPairData(wordPair, getFilesDir());
+        reset();
     }
 
     @Override
@@ -63,9 +102,14 @@ public class Flashcards extends AppCompatActivity {
 
         final TextView firstWordBox = (TextView)findViewById(R.id.revealWord1Box);
         final TextView secondWordBox = (TextView)findViewById(R.id.revealWord2Box);
-        final TextView hintBox = (TextView)findViewById(R.id.revealHintBox);
-        final Button hintButton = (Button)findViewById(R.id.hintButton);
-        final Button revealButton = (Button)findViewById(R.id.revealButton);
+        //final TextView hintBox = (TextView)findViewById(R.id.revealHintBox);
+        hintButton = (Button)findViewById(R.id.hintButton);
+        revealButton = (Button)findViewById(R.id.revealButton);
+
+        flashcardOptions = findViewById(R.id.flashcardOptions);
+        flashcardFirstOption = findViewById(R.id.flashcardOption1);
+        flashcardSecondOption = findViewById(R.id.flashcardOption2);
+        flashcardThirdOption = findViewById(R.id.flashcardOption3);
 
         firstWordBox.setText(wordPair.getFirstWord());
 
@@ -73,13 +117,41 @@ public class Flashcards extends AppCompatActivity {
         hintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!revealed)
-                    hintBox.setText(wordPair.getHint());
-                else {
+                if(!revealed) {
+                    //hintBox.setText(wordPair.getHint());
+                    QuestionData questionData = FlashcardStore.generateQuestionData(wordPair, reversed);
+
+                    String[] answers = questionData.getRandomisedAnswers();
+
+                    int answerIndex = Integer.parseInt(answers[answers.length - 1]);
+
+                    flashcardFirstOption.setText(answers[0]);
+                    flashcardSecondOption.setText(answers[1]);
+                    flashcardThirdOption.setText(answers[2]);
+
+                    Log.v("ANSWER INDEX", "" + answerIndex);
+
+                    switch (answerIndex) {
+                        case 0:
+                            flashcardCorrectOption = flashcardFirstOption;
+                            break;
+
+                        case 1:
+                            flashcardCorrectOption = flashcardSecondOption;
+                            break;
+
+                        default:
+                            flashcardCorrectOption = flashcardThirdOption;
+                            break;
+                    }
+
+                    flashcardOptions.setVisibility(View.VISIBLE);
+
+                    hintButton.setVisibility(View.GONE);
+                }else {
                     // bad button
-                    wordPair.decreasePairRank();
-                    NewFlashcard.storeWordPairData(wordPair, getFilesDir());
-                    reset();
+                    Log.v("HINT", "It's everyday bro");
+                    nextPair(false);
                 }
             }
         });
@@ -87,6 +159,27 @@ public class Flashcards extends AppCompatActivity {
         revealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(flashcardOptions.getVisibility() == View.VISIBLE) {
+                    Log.v("HINT", "With that disney channel flow");
+                    if(!revealed) {
+                        secondWordBox.setText((!wordPair.isReversed()) ? wordPair.getSecondWord() : wordPair.getFirstWord());
+                        revealButton.setText(R.string.flashcard_options_continue_text);
+
+                        correctOption = flashcardCorrectOption.isChecked();
+                        Log.v("ANSWER", "" + correctOption);
+
+                        flashcardFirstOption.setEnabled(false);
+                        flashcardSecondOption.setEnabled(false);
+                        flashcardThirdOption.setEnabled(false);
+
+                        revealed = true;
+                    }else {
+                        flashcardOptions.clearCheck();
+                        nextPair(correctOption);
+                    }
+                    return;
+                }
+
                 if(!revealed) {
                     secondWordBox.setText((!wordPair.isReversed()) ? wordPair.getSecondWord() : wordPair.getFirstWord());
                     hintButton.setText(R.string.flashcard_bad_button);
@@ -94,9 +187,8 @@ public class Flashcards extends AppCompatActivity {
                     revealed = true;
                 }else {
                     // good button
-                    wordPair.increasePairRank();
-                    NewFlashcard.storeWordPairData(wordPair, getFilesDir());
-                    reset();
+                    Log.v("HINT", "PASSED 10 SUBS IN 6 MONTHS, NEVER DONE BEFORE!");
+                    nextPair(true);
                 }
             }
         });

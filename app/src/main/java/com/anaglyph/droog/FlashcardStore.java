@@ -112,17 +112,26 @@ public class FlashcardStore {
         return wordPairs.size() == 0;
     }
 
-    public static String getRandomAnswer(String answer) {
+    public static String getRandomAnswer(String answer, boolean reversed) {
         Random random = new Random();
 
         String randomWord = answer;
         // random word should not be same as answer
         while(randomWord.equals(answer)) {
             WordPair wordPair = wordPairs.get(random.nextInt(wordPairs.size()));
-            randomWord = wordPair.getSecondWord();
+            randomWord = (reversed) ? wordPair.getFirstWord() : wordPair.getSecondWord();
         }
 
         return randomWord;
+    }
+
+    public static QuestionData generateQuestionData(WordPair wordPair, boolean reversed) {
+        String answer = (reversed) ? wordPair.getFirstWord() : wordPair.getSecondWord();
+        String firstRandomAnswer = FlashcardStore.getRandomAnswer(answer, reversed);
+        String secondRandomAnswer = FlashcardStore.getRandomAnswer(answer, reversed);
+        while(firstRandomAnswer.equals(secondRandomAnswer))
+            secondRandomAnswer = FlashcardStore.getRandomAnswer(answer, reversed);
+        return new QuestionData((!reversed) ? wordPair.getFirstWord() : wordPair.getSecondWord(), (!reversed) ? wordPair.getSecondWord() : wordPair.getFirstWord(), firstRandomAnswer, secondRandomAnswer);
     }
 
     public static void saveFlashcardData(File filesDir) {

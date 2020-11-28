@@ -1,5 +1,9 @@
 package com.anaglyph.droog;
 
+import android.util.Log;
+
+import java.util.Random;
+
 public class QuestionData {
 
     private boolean correct;
@@ -35,6 +39,31 @@ public class QuestionData {
 
     public String[] getAnswers() {
         return answers;
+    }
+
+    public String[] getRandomisedAnswers() {
+        Random random = new Random();
+        String[] randomisedAnswers = new String[answers.length + 1];
+        boolean[] answerTaken = new boolean[answers.length];
+
+        int answerIndex = -1;
+        for(int i = 0; i < randomisedAnswers.length - 1; i++) {
+            int randIndex = random.nextInt(answers.length);
+            while(answerTaken[randIndex])
+                randIndex = random.nextInt(answers.length);
+
+            if(randIndex == 2) {
+                answerIndex = i;
+                Log.v("ANSWER INDEX IN LOOP", "" + answerIndex);
+            }
+
+            randomisedAnswers[i] = answers[randIndex];
+            answerTaken[randIndex] = true;
+        }
+
+        randomisedAnswers[randomisedAnswers.length - 1] = "" + answerIndex;
+
+        return randomisedAnswers;
     }
 
 }
