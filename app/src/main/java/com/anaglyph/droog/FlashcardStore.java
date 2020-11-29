@@ -2,12 +2,8 @@ package com.anaglyph.droog;
 
 import android.util.Log;
 
-import org.json.JSONException;
-
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -15,10 +11,30 @@ public class FlashcardStore {
 
     private static int NEXT_PAIR = 0;
 
-    private static LinkedList<WordPair> wordPairs = new LinkedList<WordPair>();
+    private static String DECK_NAME;
+
+    private static HashMap<String, LinkedList<WordPair>> decks = new HashMap<String, LinkedList<WordPair>>();
+
+    public static void initDeck(String deckName) {
+        decks.put(deckName, new LinkedList<WordPair>());
+    }
+
+    public static void selectDeck(String deckName) {
+        DECK_NAME = deckName;
+    }
+
+    public static String[] getDeckNames() {
+        String[] deckNames = new String[decks.size()];
+
+        int index = 0;
+        for(String name : decks.keySet())
+            deckNames[index++] = name;
+
+        return deckNames;
+    }
 
     public static String getAnswer(String word) {
-        for(WordPair pair : wordPairs) {
+        for(WordPair pair : decks.get(DECK_NAME)) {
             if(pair.getFirstWord().equals(word))
                 return pair.getSecondWord();
             else if(pair.getSecondWord().equals(word))
@@ -33,6 +49,10 @@ public class FlashcardStore {
     }
 
     public static void putWordPair(WordPair wordPair) {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return;
+
         for(int i = 0; i < wordPairs.size(); i++) {
             WordPair comparePair = wordPairs.get(i);
             if(wordPair.getPairRank() < comparePair.getPairRank()) {
@@ -44,6 +64,10 @@ public class FlashcardStore {
     }
 
     public static void rebuildList() {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return;
+
         LinkedList<WordPair> newPairList = new LinkedList<WordPair>();
         for(WordPair wordPair : wordPairs)
             newPairList.add(wordPair);
@@ -53,6 +77,7 @@ public class FlashcardStore {
     }
 
     public static String getHint(String word) {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
         for(WordPair pair : wordPairs) {
             if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
                 return pair.getHint();
@@ -62,10 +87,18 @@ public class FlashcardStore {
     }
 
     public static int getWordPairCount() {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return 0;
+
         return wordPairs.size();
     }
 
     public static WordPair getNextPair() {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return null;
+
         if(NEXT_PAIR < wordPairs.size())
             return wordPairs.get(NEXT_PAIR++);
         else {
@@ -76,6 +109,10 @@ public class FlashcardStore {
     }
 
     public static WordPair getPairFromWord(String word) {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return null;
+
         for(WordPair pair : wordPairs) {
             if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
                 return pair;
@@ -84,11 +121,14 @@ public class FlashcardStore {
     }
 
     public static void deleteWordPair(File filesDir, WordPair wordPair) {
-        File file = new File(filesDir, wordPair.getFirstWord());
+        File file = new File(filesDir, DECK_NAME + File.separator + wordPair.getFirstWord());
+        Log.v("DELETE WORD PAIR", "DELETING: " + file.getAbsolutePath());
 
         boolean deleted = file.delete();
         Log.v("DELETE WORD PAIR", "SUCCESS: " + deleted);
         if(deleted) {
+            LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+
             for(int i = 0; i < wordPairs.size(); i++) {
                 if(wordPair.equals(wordPairs.get(i))) {
                     wordPairs.remove(wordPair);
@@ -101,6 +141,10 @@ public class FlashcardStore {
     }
 
     public static boolean wordExists(String word) {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return false;
+
         for(WordPair pair : wordPairs) {
             if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
                 return true;
@@ -109,11 +153,18 @@ public class FlashcardStore {
     }
 
     public static boolean isEmpty() {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return true;
+
         return wordPairs.size() == 0;
     }
 
     public static String getRandomAnswer(String answer, boolean reversed) {
         Random random = new Random();
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+        if(wordPairs == null)
+            return null;
 
         String randomWord = answer;
         // random word should not be same as answer
@@ -135,8 +186,10 @@ public class FlashcardStore {
     }
 
     public static void saveFlashcardData(File filesDir) {
+        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
+
         for(WordPair wordPair : wordPairs)
-            NewFlashcard.storeWordPairData(wordPair, filesDir);
+            NewFlashcard.storeWordPairData(wordPair, filesDir, DECK_NAME);
     }
 
 }

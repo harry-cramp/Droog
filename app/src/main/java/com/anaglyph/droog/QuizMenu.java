@@ -62,6 +62,7 @@ public class QuizMenu extends AppCompatActivity {
         });
 
         errorPlaceholder = findViewById(R.id.errorTextNotEnoughData);
+        FlashcardStore.selectDeck(getIntent().getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
         final Context context = this.getApplicationContext();
         startQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +78,7 @@ public class QuizMenu extends AppCompatActivity {
                 }
                 Intent intent = new Intent(context, QuizPage.class);
                 intent.putExtra(QUIZ_LENGTH_KEY, (durationSpinner.getSelectedItemPosition() == OPTION_SHORT) ? SHORT_DURATION : LONG_DURATION);
+                intent.putExtra(MainActivity.FLASHCARD_DECK_NAME, getIntent().getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
                 startActivity(intent);
                 finish();
             }
