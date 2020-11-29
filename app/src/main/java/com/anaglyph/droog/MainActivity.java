@@ -1,26 +1,24 @@
 package com.anaglyph.droog;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
      *  Date: November 2020
      */
 
+    private static final String NEW_DECK_DIALOGUE_TAG = "NEW_DECK";
+
     public static final String FLASHCARD_EDIT_MODE_TAG = "EDIT_MODE";
+    public static final String FLASHCARD_DECK_NAME = "DECK_NAME";
+
+    private Spinner deckSelector;
 
     private WordPair buildWordPairFromJSON(String jsonString) {
         try {
@@ -79,16 +82,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadDeckFiles(File file) {
+        Log.v("FILE DIR", "LOADING: " + file.getAbsolutePath());
+        for(String pairName : file.list())
+            loadDataFromJSONFile(new File(file.getAbsolutePath(), pairName));
+    }
+
+    private void loadDeckData(File file) {
+        for(String deckName : file.list()) {
+            addNewDeck(deckName);
+            FlashcardStore.selectDeck(deckName);
+            Log.v("FILE DIR", "FOUND: " + deckName);
+            loadDeckFiles(new File(file.getAbsolutePath() + File.separator + deckName));
+        }
+    }
+
     private void loadData() {
         File dataDir = getApplicationContext().getFilesDir();
 
         Log.v("LOAD DATA", "LOADING DATA...");
 
-        for(String pairFile : dataDir.list()) {
-            Log.v("LOAD DATA", "READING " + pairFile);
-            File pairData = new File(getApplicationContext().getFilesDir(), pairFile);
-            loadDataFromJSONFile(pairData);
-        }
+        loadDeckData(dataDir);
+    }
+
+    public void addNewDeck(String deckName) {
+        // add deck name to spinner
+        String[] existingDeckNames = FlashcardStore.getDeckNames();
+        String[] extendedList = new String[existingDeckNames.length + 1];
+
+        for(int i = 0; i < existingDeckNames.length; i++)
+            extendedList[i] = existingDeckNames[i];
+        extendedList[extendedList.length - 1] = deckName;
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, extendedList);
+        deckSelector.setAdapter(adapter);
+
+        // add deck to flashcards store
+        FlashcardStore.initDeck(deckName);
+
+        // create persistence directory
+        File dir = new File(getFilesDir(), deckName);
+        if(!dir.exists())
+            dir.mkdir();
+    }
+
+    private void loadSpinnerData() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, FlashcardStore.getDeckNames());
+        deckSelector.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadSpinnerData();
     }
 
     @Override
@@ -103,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(context, NewFlashcard.class);
                 intent.putExtra(FLASHCARD_EDIT_MODE_TAG, false);
+                intent.putExtra(FLASHCARD_DECK_NAME, (String)deckSelector.getSelectedItem());
                 startActivity(intent);
             }
         });
@@ -112,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, QuizMenu.class);
+                intent.putExtra(FLASHCARD_DECK_NAME, (String)deckSelector.getSelectedItem());
                 startActivity(intent);
             }
         });
@@ -125,9 +174,20 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 Intent intent = new Intent(context, Flashcards.class);
+                intent.putExtra(FLASHCARD_DECK_NAME, (String)deckSelector.getSelectedItem());
                 startActivity(intent);
             }
         });
+
+        final Button newDeckButton = findViewById(R.id.menuNewDeckButton);
+        newDeckButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NewDeckDialogue(MainActivity.this).show(getSupportFragmentManager(), NEW_DECK_DIALOGUE_TAG);
+            }
+        });
+
+        deckSelector = findViewById(R.id.menuDeckSelector);
 
         if(FlashcardStore.isEmpty())
             loadData();

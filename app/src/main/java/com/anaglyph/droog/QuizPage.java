@@ -19,6 +19,8 @@ public class QuizPage extends AppCompatActivity {
         // run through word pair list and choose random possible answers
         WordPair wordPair = FlashcardStore.getNextPair();
         int quizLength = intent.getIntExtra(QuizMenu.QUIZ_LENGTH_KEY, QuizMenu.SHORT_DURATION);
+        String deckName = intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME);
+        FlashcardStore.selectDeck(deckName);
         int index = 0;
         while(index++ < quizLength) {
             questions.add(FlashcardStore.generateQuestionData(wordPair, false));

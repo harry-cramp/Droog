@@ -1,12 +1,8 @@
 package com.anaglyph.droog;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.Buffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class LoadFlashcardsFromFile extends AppCompatActivity {
@@ -34,6 +26,7 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
     private final String TEMP_FILE_DIR = File.separator + "temp.txt";
 
     private TextView exampleFileText;
+    private String deckName;
 
     private void writeToOutputBox(String text) {
         exampleFileText.setText(exampleFileText.getText().toString() + text + "\n");
@@ -51,7 +44,7 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
                 continue;
             }
             WordPair newPair = new WordPair(firstWord, secondWord, null);
-            NewFlashcard.storeWordPairData(newPair, getApplicationContext().getFilesDir());
+            NewFlashcard.storeWordPairData(newPair, getApplicationContext().getFilesDir(), deckName);
             FlashcardStore.putWordPair(newPair);
         }
         writeToOutputBox("DONE.");
@@ -97,6 +90,8 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.load_file_page);
+
+        deckName = getIntent().getStringExtra(MainActivity.FLASHCARD_DECK_NAME);
 
         exampleFileText = findViewById(R.id.load_file_example_text);
         exampleFileText.setText(getResources().getString(R.string.from_file_eg_tree) + "\n"

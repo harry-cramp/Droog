@@ -9,6 +9,7 @@
     <string name="main_menu_quiz_button">Quiz</string>
     <string name="main_menu_new_flashcard_button">New flashcard</string>
     <string name="main_menu_no_flashcards_warning">You must make some flashcards first!</string>
+    <string name="main_menu_new_deck_button">New Deck</string>
     <string name="new_flashcard_word_1">Word 1</string>
     <string name="new_flashcard_word_2">Word 2</string>
     <string name="new_flashcard_auto_hints_checkbox">Automatic Hints</string>
@@ -50,6 +51,7 @@
     <string name="from_file_eg_katze">die Katze</string>
     <string name="from_file_eg_eye">eye</string>
     <string name="from_file_eg_auge">das Auge</string>
+    <string name="new_deck_dialogue_title">Create New Deck</string>
     <string name="ellipsis">...</string>
 
 </resources>

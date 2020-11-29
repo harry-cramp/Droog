@@ -26,6 +26,7 @@ public class Flashcards extends AppCompatActivity {
     public static final String FLASHCARD_SECOND_WORD_TAG = "SECOND_TAG";
     public static final String FLASHCARD_HINT_TAG = "HINT_TAG";
 
+    private String deckName;
     private WordPair wordPair;
     private Random random;
     private Button hintButton;
@@ -84,7 +85,7 @@ public class Flashcards extends AppCompatActivity {
             wordPair.decreasePairRank();
         else
             wordPair.increasePairRank();
-        NewFlashcard.storeWordPairData(wordPair, getFilesDir());
+        NewFlashcard.storeWordPairData(wordPair, getFilesDir(), deckName);
         reset();
     }
 
@@ -95,6 +96,10 @@ public class Flashcards extends AppCompatActivity {
 
         revealed = false;
         random = new Random();
+
+        Intent intent = getIntent();
+        deckName = intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME);
+        FlashcardStore.selectDeck(deckName);
 
         wordPair = FlashcardStore.getNextPair();
         if(wordPair == null)
@@ -111,6 +116,7 @@ public class Flashcards extends AppCompatActivity {
         flashcardSecondOption = findViewById(R.id.flashcardOption2);
         flashcardThirdOption = findViewById(R.id.flashcardOption3);
 
+        Log.v("FLASHCARDS DECK WORD PAIR", deckName);
         firstWordBox.setText(wordPair.getFirstWord());
 
         final Context context = this.getApplicationContext();
@@ -150,7 +156,6 @@ public class Flashcards extends AppCompatActivity {
                     hintButton.setVisibility(View.GONE);
                 }else {
                     // bad button
-                    Log.v("HINT", "It's everyday bro");
                     nextPair(false);
                 }
             }
@@ -160,7 +165,6 @@ public class Flashcards extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(flashcardOptions.getVisibility() == View.VISIBLE) {
-                    Log.v("HINT", "With that disney channel flow");
                     if(!revealed) {
                         secondWordBox.setText((!wordPair.isReversed()) ? wordPair.getSecondWord() : wordPair.getFirstWord());
                         revealButton.setText(R.string.flashcard_options_continue_text);
@@ -187,7 +191,6 @@ public class Flashcards extends AppCompatActivity {
                     revealed = true;
                 }else {
                     // good button
-                    Log.v("HINT", "PASSED 10 SUBS IN 6 MONTHS, NEVER DONE BEFORE!");
                     nextPair(true);
                 }
             }
@@ -203,6 +206,7 @@ public class Flashcards extends AppCompatActivity {
                 intent.putExtra(FLASHCARD_SECOND_WORD_TAG, wordPair.getSecondWord());
                 intent.putExtra(FLASHCARD_HINT_TAG, wordPair.getHint());
                 intent.putExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, true);
+                intent.putExtra(MainActivity.FLASHCARD_DECK_NAME, deckName);
                 startActivity(intent);
                 return true;
 

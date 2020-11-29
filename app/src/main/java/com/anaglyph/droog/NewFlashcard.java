@@ -30,6 +30,7 @@ public class NewFlashcard extends AppCompatActivity {
     private boolean editMode;
 
     private String editFlashcardFirstWord;
+    private String deckName;
 
     public static final String JSON_FIELD_FIRST_WORD = "Word 1";
     public static final String JSON_FIELD_SECOND_WORD = "Word 2";
@@ -51,12 +52,15 @@ public class NewFlashcard extends AppCompatActivity {
         return null;
     }
 
-    private static String writeJSONObject(JSONObject jsonObject, File filesDir) {
+    private static String writeJSONObject(JSONObject jsonObject, File filesDir, String deckName) {
         String jsonString = jsonObject.toString();
 
         try {
-            File file = new File(filesDir, (String)jsonObject.get("Word 1"));
+            File file = new File(filesDir, deckName + File.separator + (String)jsonObject.get("Word 1"));
             Log.v("FILE DIR", file.getAbsolutePath());
+            File saveDir = new File(filesDir, deckName);
+            if(!saveDir.exists())
+                saveDir.mkdir();
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(jsonString);
@@ -71,8 +75,8 @@ public class NewFlashcard extends AppCompatActivity {
         return null;
     }
 
-    public static void storeWordPairData(WordPair wordPair, File filesDir) {
-        writeJSONObject(buildJSONObject(wordPair), filesDir);
+    public static void storeWordPairData(WordPair wordPair, File filesDir, String deckName) {
+        writeJSONObject(buildJSONObject(wordPair), filesDir, deckName);
     }
 
     @Override
@@ -81,7 +85,10 @@ public class NewFlashcard extends AppCompatActivity {
 
         setContentView(R.layout.new_flashcard);
 
-        Intent intent = getIntent();
+        deckName = getIntent().getStringExtra(MainActivity.FLASHCARD_DECK_NAME);
+        FlashcardStore.selectDeck(deckName);
+
+        final Intent intent = getIntent();
         editMode = intent.getBooleanExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, false);
 
         // Handle interactions with page elements
@@ -120,6 +127,8 @@ public class NewFlashcard extends AppCompatActivity {
 
                 if(editMode) {
                     // delete edited word pair
+                    Log.v("NEW FLASHCARD", "Selecting deck: " + deckName);
+                    FlashcardStore.selectDeck(deckName);
                     WordPair pair = FlashcardStore.getPairFromWord(editFlashcardFirstWord);
                     FlashcardStore.deleteWordPair(getFilesDir(), pair);
 
@@ -127,10 +136,11 @@ public class NewFlashcard extends AppCompatActivity {
                     WordPair newPair = new WordPair(firstWordBox.getText().toString(), secondWordBox.getText().toString(), customHintBox.getText().toString());
                     newPair.setPairRank(pair.getPairRank());
                     FlashcardStore.putWordPair(newPair);
-                    storeWordPairData(newPair, getFilesDir());
+                    storeWordPairData(newPair, getFilesDir(), intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
 
                     // exit activity and return to flashcard review section
                     finish();
+                    return;
                 }
 
                 String firstWord = firstWordBox.getText().toString();
@@ -171,7 +181,7 @@ public class NewFlashcard extends AppCompatActivity {
                 WordPair wordPair = new WordPair(firstWord, secondWord, customHintBox.getText().toString());
 
                 // write the new word pair to file
-                writeJSONObject(buildJSONObject(wordPair), getApplicationContext().getFilesDir());
+                writeJSONObject(buildJSONObject(wordPair), getApplicationContext().getFilesDir(), intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
 
                 // if neither box is empty, add strings to flashcard store and clear text
                 FlashcardStore.putWordPair(wordPair);
@@ -188,6 +198,7 @@ public class NewFlashcard extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.action_load_from_file:
                 Intent intent = new Intent(this, LoadFlashcardsFromFile.class);
+                intent.putExtra(MainActivity.FLASHCARD_DECK_NAME, deckName);
                 startActivity(intent);
                 return true;
 
