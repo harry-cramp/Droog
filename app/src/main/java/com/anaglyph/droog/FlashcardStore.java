@@ -45,7 +45,7 @@ public class FlashcardStore {
     }
 
     public static void putWordPair(String firstWord, String secondWord, String hint) {
-        putWordPair(new WordPair(firstWord, secondWord, hint));
+        putWordPair(new WordPair(firstWord, secondWord));
     }
 
     public static void putWordPair(WordPair wordPair) {
@@ -74,16 +74,6 @@ public class FlashcardStore {
         wordPairs.clear();
         for(WordPair wordPair : newPairList)
             putWordPair(wordPair);
-    }
-
-    public static String getHint(String word) {
-        LinkedList<WordPair> wordPairs = decks.get(DECK_NAME);
-        for(WordPair pair : wordPairs) {
-            if(pair.getFirstWord().equals(word) || pair.getSecondWord().equals(word))
-                return pair.getHint();
-        }
-
-        return null;
     }
 
     public static int getWordPairCount() {

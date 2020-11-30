@@ -25,7 +25,6 @@ public class Flashcards extends AppCompatActivity {
 
     public static final String FLASHCARD_FIRST_WORD_TAG = "FIRST_WORD";
     public static final String FLASHCARD_SECOND_WORD_TAG = "SECOND_TAG";
-    public static final String FLASHCARD_HINT_TAG = "HINT_TAG";
 
     private String deckName;
     private WordPair wordPair;
@@ -210,7 +209,6 @@ public class Flashcards extends AppCompatActivity {
                 Intent intent = new Intent(this, NewFlashcard.class);
                 intent.putExtra(FLASHCARD_FIRST_WORD_TAG, wordPair.getFirstWord());
                 intent.putExtra(FLASHCARD_SECOND_WORD_TAG, wordPair.getSecondWord());
-                intent.putExtra(FLASHCARD_HINT_TAG, wordPair.getHint());
                 intent.putExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, true);
                 intent.putExtra(MainActivity.FLASHCARD_DECK_NAME, deckName);
                 startActivity(intent);

@@ -34,7 +34,6 @@ public class NewFlashcard extends AppCompatActivity {
 
     public static final String JSON_FIELD_FIRST_WORD = "Word 1";
     public static final String JSON_FIELD_SECOND_WORD = "Word 2";
-    public static final String JSON_FIELD_HINT = "Hint";
     public static final String JSON_FIELD_PAIR_RANK = "PairRank";
 
     private static JSONObject buildJSONObject(WordPair wordPair) {
@@ -42,7 +41,6 @@ public class NewFlashcard extends AppCompatActivity {
             JSONObject pairJSON = new JSONObject();
             pairJSON.put(JSON_FIELD_FIRST_WORD, wordPair.getFirstWord());
             pairJSON.put(JSON_FIELD_SECOND_WORD, wordPair.getSecondWord());
-            pairJSON.put(JSON_FIELD_HINT, wordPair.getHint());
             pairJSON.put(JSON_FIELD_PAIR_RANK, wordPair.getPairRank());
             return pairJSON;
         }catch (JSONException e) {
@@ -92,16 +90,6 @@ public class NewFlashcard extends AppCompatActivity {
         editMode = intent.getBooleanExtra(MainActivity.FLASHCARD_EDIT_MODE_TAG, false);
 
         // Handle interactions with page elements
-        final CheckBox autoHintsBox = (CheckBox)findViewById(R.id.newFlashcardAutoHintsBox);
-        final TextView customHintBox = (TextView)findViewById(R.id.newFlashcardCustomHint);
-
-        // custom hints text box is disable if automatic hints box has been checked
-        autoHintsBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                customHintBox.setEnabled(!autoHintsBox.isChecked());
-            }
-        });
 
         // warn user if button is pressed without filling in either text box
         final TextView firstWordBox = (TextView)findViewById(R.id.newFlashcardWord1);
@@ -114,7 +102,6 @@ public class NewFlashcard extends AppCompatActivity {
 
             firstWordBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_FIRST_WORD_TAG));
             secondWordBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_SECOND_WORD_TAG));
-            customHintBox.setText(intent.getStringExtra(Flashcards.FLASHCARD_HINT_TAG));
 
             editFlashcardFirstWord = intent.getStringExtra(Flashcards.FLASHCARD_FIRST_WORD_TAG);
         }
@@ -133,7 +120,7 @@ public class NewFlashcard extends AppCompatActivity {
                     FlashcardStore.deleteWordPair(getFilesDir(), pair);
 
                     // create new word pair
-                    WordPair newPair = new WordPair(firstWordBox.getText().toString(), secondWordBox.getText().toString(), customHintBox.getText().toString());
+                    WordPair newPair = new WordPair(firstWordBox.getText().toString(), secondWordBox.getText().toString());
                     newPair.setPairRank(pair.getPairRank());
                     FlashcardStore.putWordPair(newPair);
                     storeWordPairData(newPair, getFilesDir(), intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
@@ -178,7 +165,7 @@ public class NewFlashcard extends AppCompatActivity {
 
                 maxLengthWarningBox.setVisibility(View.GONE);
 
-                WordPair wordPair = new WordPair(firstWord, secondWord, customHintBox.getText().toString());
+                WordPair wordPair = new WordPair(firstWord, secondWord);
 
                 // write the new word pair to file
                 writeJSONObject(buildJSONObject(wordPair), getApplicationContext().getFilesDir(), intent.getStringExtra(MainActivity.FLASHCARD_DECK_NAME));
@@ -187,7 +174,6 @@ public class NewFlashcard extends AppCompatActivity {
                 FlashcardStore.putWordPair(wordPair);
                 firstWordBox.setText(R.string.empty_string);
                 secondWordBox.setText(R.string.empty_string);
-                customHintBox.setText(R.string.empty_string);
                 Toast.makeText(context, R.string.new_flashcard_toast, Toast.LENGTH_SHORT).show();
             }
         });

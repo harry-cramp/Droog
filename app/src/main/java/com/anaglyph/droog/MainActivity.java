@@ -43,15 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
             String firstWord = jsonObject.getString(NewFlashcard.JSON_FIELD_FIRST_WORD);
             String secondWord = jsonObject.getString(NewFlashcard.JSON_FIELD_SECOND_WORD);
-            String hint = jsonObject.getString(NewFlashcard.JSON_FIELD_HINT);
             int pairRank = jsonObject.getInt(NewFlashcard.JSON_FIELD_PAIR_RANK);
 
             Log.v("BUILD FROM JSON", "FIRST WORD: \t" + firstWord);
             Log.v("BUILD FROM JSON", "SECOND WORD: \t" + secondWord);
-            Log.v("BUILD FROM JSON", "HINT: \t" + hint);
             Log.v("BUILD FROM JSON", "PAIRRANK: \t" + pairRank);
 
-            WordPair wordPair = new WordPair(firstWord, secondWord, hint);
+            WordPair wordPair = new WordPair(firstWord, secondWord);
             wordPair.setPairRank(pairRank);
 
             return wordPair;

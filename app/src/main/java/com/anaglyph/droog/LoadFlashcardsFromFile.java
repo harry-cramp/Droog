@@ -43,7 +43,7 @@ public class LoadFlashcardsFromFile extends AppCompatActivity {
                 writeToOutputBox("INPUT EXCEEDS 120 CHARACTERS, SKIPPING");
                 continue;
             }
-            WordPair newPair = new WordPair(firstWord, secondWord, null);
+            WordPair newPair = new WordPair(firstWord, secondWord);
             NewFlashcard.storeWordPairData(newPair, getApplicationContext().getFilesDir(), deckName);
             FlashcardStore.putWordPair(newPair);
         }
