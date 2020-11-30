@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private static final String NEW_DECK_DIALOGUE_TAG = "NEW_DECK";
+    private static final String DECK_SELECTOR_INDEX = "DECK_INDEX";
 
     public static final String FLASHCARD_EDIT_MODE_TAG = "EDIT_MODE";
     public static final String FLASHCARD_DECK_NAME = "DECK_NAME";
@@ -136,6 +137,15 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         loadSpinnerData();
+
+        deckSelector.setSelection(getIntent().getIntExtra(DECK_SELECTOR_INDEX, 0));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        getIntent().putExtra(DECK_SELECTOR_INDEX, deckSelector.getSelectedItemPosition());
     }
 
     @Override
