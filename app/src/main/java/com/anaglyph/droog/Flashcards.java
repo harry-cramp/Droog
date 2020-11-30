@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -123,6 +124,11 @@ public class Flashcards extends AppCompatActivity {
         hintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(FlashcardStore.getWordPairCount() < 3) {
+                    Toast.makeText(context, R.string.flashcard_hint_insufficient_cards_warning, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if(!revealed) {
                     //hintBox.setText(wordPair.getHint());
                     QuestionData questionData = FlashcardStore.generateQuestionData(wordPair, reversed);

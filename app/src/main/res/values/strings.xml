@@ -28,6 +28,7 @@
     <string name="flashcard_good_button">Good</string>
     <string name="flashcard_bad_button">Bad</string>
     <string name="flashcard_options_continue_text">Continue</string>
+    <string name="flashcard_hint_insufficient_cards_warning">You must create at least 3 cards to use the hint option!</string>
     <string name="empty_string"></string>
     <string name="json_flashcard_first_word_tag">Word 1</string>
     <string name="json_flashcard_second_word_tag">Word 2</string>
