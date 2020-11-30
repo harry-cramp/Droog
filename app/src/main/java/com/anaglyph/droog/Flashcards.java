@@ -117,6 +117,8 @@ public class Flashcards extends AppCompatActivity {
         flashcardThirdOption = findViewById(R.id.flashcardOption3);
 
         Log.v("FLASHCARDS DECK WORD PAIR", deckName);
+        if(wordPair == null)
+            return;
         firstWordBox.setText(wordPair.getFirstWord());
 
         final Context context = this.getApplicationContext();
